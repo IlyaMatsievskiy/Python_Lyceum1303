@@ -136,3 +136,63 @@ class MaxHeap:
         self.list.pop()
         self.move_down(1)
         return return_value
+
+
+class Deikctra:
+    def __init__(self):
+        self.graph=defaultdict(list)
+        self.nodes_to_visit = []
+        self.visited = set()
+    def input(self):
+        self.input_list = [[1, 2, 1], [1, 7, 9], [2, 3, 2], [3, 4, 1], [4, 7, 2], [4, 5, 2], [5, 6, 3], [6, 7, 1], [7, 9, 6], [7, 9, 1], [7, 8, 2], [8, 9, 2]]
+        self.number_of_elements = 9
+        self.min_dist = {i: float('inf') for i in range(1, number_of_elements + 1)}
+        self.source = 1
+        self.target = 9
+    def start(self):
+        for a, b, cost in self.input_list:
+            self.graph[a] += [(cost, b)]
+        self.nodes_to_visit.append((0, self.source))
+        self.min_dist[self.source] = 0
+    def cycle(self):
+        while len(self.nodes_to_visit):
+            # Берем самую близкую вершину к нам
+            # cost - стоимость попадания, node - название вершины
+            cost, node = min(self.nodes_to_visit)
+            # Удаляем эту вершину из списка вершин для посещения
+            self.nodes_to_visit.remove((cost, node))
+            # Проверяем что мы в нее еще не заходили (если вдруг мы сначала добавили (9,7), а потом (6,7)
+            if node in self.visited:
+                continue
+            # Добавляем в список посещенных
+            self.visited.add(node)
+            # Проходимся по всем соединенным вершинам
+            # n_cost - стоимость попадания из текущей вершины, n_node - прикрепленная вершина, в которую хотим попасть
+            check_res(n_cost,n_node, node, cost)
+    def check_res(self, node, cost):
+        for n_cost, n_node in self.graph[node]:
+            # Проверяем нашли ли мы оптимальный путь
+            if cost + n_cost < self.min_dist[n_node] and n_node not in self.visited:
+                # Если нашли то обновляем значение расстояния
+                self.min_dist[n_node] = cost + n_cost
+                # И добавляем эту вершину в список вершин для посещения
+                self.nodes_to_visit.append((cost + n_cost, n_node))
+    def check_and_ans(self):
+        if len(self.visited) != self.number_of_elements:
+            print("Ошибка")
+        else:
+            # Выводим ответ
+            print(self.min_dist[self.target])
+            way()
+    def way(self):
+        way=[]
+        a = self.source
+        b=self.targer
+        while b != a:
+            for i in self.input_list:
+                if i[1] == b:
+                    if self.min_dist[b] - i[2] == self.min_dist[i[0]]:
+                        way.insert(0, i[0])
+                        b = i[0]
+                        break
+        print(way)
