@@ -1,0 +1,42 @@
+from collections import defaultdict, deque
+num_lessons = 8
+deps = [[7,5],[5,2],[5,1],[6,3],[6,2],[7,6],[3,4],[3,2],[3,0],[1,0],[2,0],[4,0]]
+
+class top_sort:
+    def __init__(self,num_lessons, dep,):
+        self.num_lessons=num_lessons
+        self.deps=dep
+        self.graph = defaultdict(list)
+        self.cand = deque()
+        self.answer = []
+        self.removed_edges = 0
+    def prepare_incoming_edges(self):
+        self.incoming_edges = [0 for i in range(self.num_lessons)]
+    def fill_graph(self):
+        for lesson in deps:
+            graph[lesson[0]].append(lesson[1])
+            incoming_edges[lesson[1]] += 1
+    def find_cand(self):
+        for node, number_of_edges in enumerate(incoming_edges):
+            if number_of_edges == 0:
+                add_cand(node)
+    def cycle(self,node):
+        while availability_cand()==True:
+            connected_cand()
+    def add_cand(self, node):
+        cand.append(node)
+    def availability_cand(self):
+        if cand!=[]:
+            return True
+    def take_cand(self):
+        current_element = cand.pop()
+        return current_element
+    def connected_cand(self):
+        for node in self.graph[self.take_cand()]:
+            self.take_cand()[node] -= 1
+            new_cand(node)
+    def new_cand(self, node):
+        if self.incoming_edges[node] == 0:
+            add_cand(node)
+    def ans(self, current_element):
+        self.answer.append(current_element)
